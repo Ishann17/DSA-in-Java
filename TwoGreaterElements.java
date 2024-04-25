@@ -5,36 +5,39 @@ public class TwoGreaterElements {
     public static long[] findElements( long a[], long n)
     {
         long[] ans = new long[a.length-2];
-        int index = 0;
-        long ele1 = -1;
-        long ele2 = 0;
-        //Finding two greater elements
-        for (int i=0; i<a.length; i++){
-            if(a[i] > ele1){
-                ele2 = ele1;
-                ele1 = a[i];
-            } else if (a[i] > ele2 && a[i] < ele1) {
-                ele2 = a[i];
-            }
-        }
-        //Sorting value in the ans array
-        for (int i = 0; i < a.length; i++) {
-            if(a[i] != ele1 && a[i] != ele2){
-                ans[index] = a[i];
-                index++;
-            }
-        }
-        //Sorted Using Bubble Sort Technique
-        for(int i=0; i<ans.length-1; i++){
-            for(int j=0; j< ans.length-i-1; j++){
-                if(ans[j] > ans[j + 1]){
-                    long temp = ans[j];
-                    ans[j] = ans[j + 1];
-                    ans[j + 1] = temp;
-                }
-            }
+        int low = 0;
+        int high = (int) n-1;
+        quickSort(a, low, high);
+        for(int i=0; i<ans.length; i++){
+            ans[i] = a[i];
         }
         return ans;
+    }
+    public static int partition(long [] a, int low, int high){
+        long pivot = a[high];
+        int i = low - 1;
+        for(int j=low; j<high; j++){
+            if(a[j] <= pivot){
+                i++;
+                //swap
+                int temp = (int) a[i];
+                a[i] = a[j];
+                a[j] = temp;
+            }
+        }
+        //pivot index
+        int temp = (int) a[i+1];
+        a[i+1] = a[high];
+        a[high] = temp;
+        return i+1;
+    }
+
+    public static void quickSort(long[] a, int low, int high){
+        if(low<high){
+            int pi = partition(a, low, high);
+            quickSort(a, low, pi-1);
+            quickSort(a, pi+1, high);
+        }
     }
 
     public static void main(String[] args) {
